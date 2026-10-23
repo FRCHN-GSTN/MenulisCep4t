@@ -40,7 +40,7 @@ function Get-PythonCommand {
 
 function Show-Banner {
     Write-Host "  ========================================================" -ForegroundColor Cyan
-    Write-Host "                 LAPORAN GENERATOR CLI v3.0.0             " -ForegroundColor Cyan
+    Write-Host "                 LAPORAN GENERATOR CLI v1.0.0             " -ForegroundColor Cyan
     Write-Host "     Otomatisasi Dokumen Akademik (Typst + DOCX Engine)   " -ForegroundColor Cyan
     Write-Host "  ========================================================" -ForegroundColor Cyan
     Write-Host ""

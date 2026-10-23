@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "menuliscep4t",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "Engine dokumen akademik + penyunting naskah Indonesia untuk AI Agents: preset kampus, Typst/Pandoc dual build, MCP tools, EYD proofreading, citation checks",
   "main": "bin/laporan-generator.js",
   "bin": {
@@ -78,3 +78,4 @@
   },
   "homepage": "https://github.com/muadzhdz/laporan-generator#readme"
 }
+

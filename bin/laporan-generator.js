@@ -25,7 +25,7 @@ function showHelp() {
   ========================================================
          LAPORAN GENERATOR CLI (Multi-Host AI Engine)     
   ========================================================
-  Versi: 3.0.0
+  Versi: 1.0.0
   
   Penggunaan:
     npx laporan-generator <perintah> [opsi]
