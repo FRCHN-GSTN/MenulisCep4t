@@ -364,6 +364,8 @@ abstract_en: >
 keywords_en: ["eBPF", "Intrusion Detection", "Linux Kernel", "Network Security"]
 ```
 
+> ⚠️ **SEMUA DATA DI ATAS ADALAH CONTOH ILUSTRATIF (DUMMY)** — Nama, NIM, NIP, judul, abstrak, dosen pembimbing, dan institusi **bukan data nyata**. Anda **wajib mengganti** seluruh field di `metadata.yml` dengan data Anda sendiri sebelum kompilasi. Repo ini tidak menyimpan data pribadi mahasiswa, dosen, atau skripsi asli.
+
 ---
 
 ## Struktur Direktori
