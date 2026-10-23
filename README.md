@@ -463,3 +463,17 @@ npm test
 ## Lisensi
 
 Didistribusikan di bawah lisensi MIT. Silakan baca berkas [LICENSE](LICENSE) untuk informasi lebih lanjut.
+
+---
+
+## Terima Kasih
+
+Terima kasih telah menggunakan **MenulisCep4t**. Proyek ini dibangun di atas kerja keras komunitas open source:
+
+- [muadzhdz/laporan-generator](https://github.com/muadzhdz/laporan-generator) — engine dokumen, preset kampus, MCP
+- [nothinx/naskah-id](https://github.com/nothinx/naskah-id) — kaidah EYD V/KBBI, kontrak kejujuran, OpenAlex
+- [blader/humanizer](https://github.com/blader/humanizer) — 26 pola AI writing (Wikipedia-based)
+
+Semua lisensi **MIT**. Bebas dipakai, dimodifikasi, dan didistribusikan ulang.
+
+Jika proyek ini membantu Anda, ⭐ star repo ini agar lebih banyak orang menemukannya.
