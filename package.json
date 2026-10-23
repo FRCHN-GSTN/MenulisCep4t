@@ -1,0 +1,80 @@
+{
+  "name": "menuliscep4t",
+  "version": "3.0.0",
+  "description": "Engine dokumen akademik + penyunting naskah Indonesia untuk AI Agents: preset kampus, Typst/Pandoc dual build, MCP tools, EYD proofreading, citation checks",
+  "main": "bin/laporan-generator.js",
+  "bin": {
+    "menuliscep4t": "bin/laporan-generator.js",
+    "skripsi": "bin/laporan-generator.js",
+    "laporan-generator": "bin/laporan-generator.js",
+    "laporan": "bin/laporan-generator.js",
+    "laporan-mcp": "bin/mcp-server.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    ".agents/",
+    "presets/",
+    "scripts/",
+    "chapters/",
+    "references/",
+    "contoh/",
+    "SKILL.md",
+    "KONTRAK.md",
+    "template.typ",
+    "reference.docx",
+    "docx.lua",
+    "references.bib",
+    "apa.csl",
+    "metadata.yml",
+    "cover.md",
+    "logo.jpg",
+    "Makefile",
+    "build.sh",
+    "build-docx.sh",
+    "laporan",
+    "laporan.ps1",
+    "docs/",
+    "README.md",
+    "LICENSE",
+    "!**/__pycache__",
+    "!**/*.pyc"
+  ],
+  "scripts": {
+    "test": "./test.sh",
+    "test:mcp": "node tests/test_mcp.js",
+    "mcp": "node bin/mcp-server.js",
+    "doctor": "node bin/laporan-generator.js doctor",
+    "stats": "node bin/laporan-generator.js stats",
+    "sync-hosts": "node bin/laporan-generator.js sync-hosts",
+    "setup": "node bin/laporan-generator.js setup",
+    "prepack": "node -e \"require('./lib/sync-hosts').syncInternalResources(process.cwd())\""
+  },
+  "keywords": [
+    "typst",
+    "pandoc",
+    "academic-reports",
+    "thesis-generator",
+    "skripsi",
+    "ai-agents",
+    "mcp",
+    "model-context-protocol",
+    "antigravity",
+    "antigravity-cli",
+    "claude-code",
+    "skills"
+  ],
+  "author": "Mu'adz Hudzaifah <muadzhudzaifah511@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muadzhdz/laporan-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/muadzhdz/laporan-generator/issues"
+  },
+  "homepage": "https://github.com/muadzhdz/laporan-generator#readme"
+}

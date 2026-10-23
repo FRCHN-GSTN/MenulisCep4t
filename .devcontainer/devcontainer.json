@@ -1,0 +1,9 @@
+{
+  "name": "laporan-generator",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "if [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux --init none --no-confirm; fi; if [ ! -S /nix/var/nix/daemon-socket/socket ]; then sudo nohup /nix/var/nix/profiles/default/bin/nix-daemon > /tmp/nix-daemon.log 2>&1 & sleep 2; fi",
+  "postStartCommand": "if [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux --init none --no-confirm; fi; if [ ! -S /nix/var/nix/daemon-socket/socket ]; then sudo nohup /nix/var/nix/profiles/default/bin/nix-daemon > /tmp/nix-daemon.log 2>&1 & sleep 2; fi"
+}

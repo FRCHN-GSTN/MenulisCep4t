@@ -1,0 +1,19 @@
+services:
+  laporan-generator:
+    build: .
+    container_name: laporan-generator
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: ./build.sh
+
+  watch:
+    build: .
+    container_name: laporan-generator-watch
+    profiles: [watch]
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: make watch

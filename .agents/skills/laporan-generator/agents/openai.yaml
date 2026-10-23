@@ -1,0 +1,3 @@
+interface:
+  display_name: "Laporan Generator"
+  short_description: "Universal Academic Report & Thesis Generator (Typst + DOCX)"

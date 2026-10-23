@@ -1,0 +1,32 @@
+---
+title: "Otomatisasi Pembuatan Dokumen Laporan Akademik Menggunakan Pandoc, Typst, dan Markdown"
+subtitle: "Laporan Dokumentasi Pipeline dan Arsitektur Multi-Engine"
+author:
+  - name: "Nama Mahasiswa 1"
+    nim: "101234567"
+  - name: "Nama Mahasiswa 2"
+    nim: "101234568"
+  - name: "Nama Mahasiswa 3"
+    nim: "101234569"
+lecturer: "Dr. Nama Dosen Pengampu, M.Kom."
+lecturer_label: "Dosen Pengampu:"
+course: "Proyek Perangkat Lunak"
+institution: "Universitas Example"
+faculty: "Program Studi Informatika"
+year: "2026/2027"
+date: "Agustus 2026"
+daftar_gambar: false
+daftar_tabel: false
+# Komponen halaman depan opsional (aktifkan jika diperlukan):
+# abstract_id: |
+#   Ringkasan atau abstrak laporan dalam Bahasa Indonesia...
+# keywords_id:
+#   - Kata Kunci 1
+#   - Kata Kunci 2
+# abstract_en: |
+#   Summary or abstract of the report in English...
+# keywords_en:
+#   - Keyword 1
+#   - Keyword 2
+preset: "standard"
+...

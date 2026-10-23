@@ -1,0 +1,30 @@
+PEDOMAN PENULISAN SKRIPSI DAN TUGAS AKHIR
+UNIVERSITAS PADJADJARAN
+FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM
+TAHUN 2026
+
+BAB II. FORMAT FISIK DAN TATA CARA PENGETIKAN
+
+1. Kertas dan Ukuran
+Naskah diketik pada kertas HVS A4 80 gram berwarna putih.
+
+2. Batas Tepi Pengetikan (Margin)
+Batas tepi pengetikan pada halaman naskah diatur sebagai berikut:
+- Tepi atas: 4 cm
+- Tepi bawah: 3 cm
+- Tepi kiri: 4 cm (untuk penjilidan hardcover)
+- Tepi kanan: 3 cm
+
+3. Jenis dan Ukuran Huruf (Font)
+Naskah diketik dengan jenis huruf Times New Roman ukuran 12 pt.
+Awal paragraf (alinea baru) menjorok ke dalam sebesar 1.25 cm.
+
+4. Spasi Baris
+Jarak antar baris naskah adalah 1.5 spasi dengan perataan rata kiri-kanan (justify).
+
+5. Penomoran Bab dan Sub-bab
+Judul bab diawali dengan BAB I, BAB II, BAB III yang ditulis simetris di tengah.
+Sub-bab diberi nomor 1.1. Latar Belakang, 1.2. Rumusan Masalah.
+
+6. Halaman Sampul
+Halaman sampul memuat judul, logo universitas, nama penulis, NIM, nama dosen pembimbing, dan tahun penyusunan.

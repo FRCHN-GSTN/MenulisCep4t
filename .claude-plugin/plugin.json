@@ -1,0 +1,15 @@
+﻿{
+  "name": "laporan-generator",
+  "version": "3.0.0",
+  "description": "Universal Academic Report & Thesis Generator for AI Agents",
+  "author": {
+    "name": "Mu'adz Hudzaifah",
+    "email": "muadzhudzaifah511@gmail.com"
+  },
+  "homepage": "https://github.com/muadzhdz/laporan-generator",
+  "repository": "https://github.com/muadzhdz/laporan-generator",
+  "license": "MIT",
+  "skills": [
+    "./.agents/skills/laporan-generator"
+  ]
+}
