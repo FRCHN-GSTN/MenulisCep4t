@@ -1,0 +1,27 @@
+﻿# Preset: Paper Ilmiah (Jurnal Indonesia)
+preset_id: "paper-ilmiah"
+name: "Paper Ilmiah (Jurnal Indonesia)"
+description: "Format artikel ilmiah jurnal Indonesia: margin 3cm, TNR 12pt, spasi 1.5, heading arabic tanpa BAB, tanpa sampul dosen."
+
+# Margin halaman (umum jurnal Indonesia: 2.5-3cm semua sisi)
+margin_top: 3cm
+margin_bottom: 3cm
+margin_left: 3cm
+margin_right: 3cm
+
+# Tipografi
+font_family: "Times New Roman"
+font_size: 12pt
+line_spacing: 0.75em
+first_line_indent: 1.25cm
+
+# Penomoran Heading (artikel: 1, 2, 3 tanpa BAB; sub-bab 1.1, 1.2)
+heading_chapter_prefix: ""
+heading_chapter_num_format: "arabic"
+heading_sub_dot: true
+heading_subsub_dot: false
+
+# Pengaturan Cover (artikel: tanpa dosen pembimbing)
+cover_show_lecturer: false
+cover_hide_lecturer: true
+cover_logo_width: 3cm

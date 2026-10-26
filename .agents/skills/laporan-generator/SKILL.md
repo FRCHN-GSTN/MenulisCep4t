@@ -65,7 +65,7 @@ sitasi, dan batas kata. Untuk skripsi dan tesis, kampus sasaran menentukan prese
 
 `skripsi-4433` (standar nasional 4-4-3-3), `ui-skripsi`, `itb-ta`, `ugm-skripsi`,
 `its-skripsi`, `unpad-skripsi`, `ub-skripsi`, `undip-skripsi`, `unair-skripsi`, `ipb-ppki`,
-`telkom-ta`, `standard`. Daftar lengkap: `./laporan preset list` atau MCP
+`telkom-ta`, `paper-ilmiah`, `standard`. Daftar lengkap: `./laporan preset list` atau MCP
 `laporan_presets`. Bila kampus belum ada, buat preset baru dengan
 `./laporan preset scan /path/pedoman.pdf`.
 
