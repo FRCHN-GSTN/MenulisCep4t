@@ -1,0 +1,27 @@
+# Preset: Institut Teknologi Bandung (ITB)
+preset_id: "itb-ta"
+name: "Institut Teknologi Bandung (ITB)"
+description: "Format Tugas Akhir / Tesis sesuai Pedoman Penulisan Karya Ilmiah ITB (Margin 4-4-3-3, Cover Minimalis)."
+
+# Margin halaman (Standar ITB: Kiri 4cm, Atas 4cm, Bawah 3cm, Kanan 3cm)
+margin_top: 4cm
+margin_bottom: 3cm
+margin_left: 4cm
+margin_right: 3cm
+
+# Tipografi
+font_family: "Libertinus Serif"
+font_size: 12pt
+line_spacing: 0.75em
+first_line_indent: 1.25cm
+
+# Penomoran Heading
+heading_chapter_prefix: "BAB "
+heading_chapter_num_format: "roman"
+heading_sub_dot: true
+heading_subsub_dot: false
+
+# Pengaturan Cover (ITB standar sampul depan tidak mencantumkan nama dosen pembimbing)
+cover_show_lecturer: false
+cover_hide_lecturer: true
+cover_logo_width: 4.5cm

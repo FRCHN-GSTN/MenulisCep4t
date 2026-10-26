@@ -1,0 +1,26 @@
+---
+title: "Analisis Faktor-Faktor Penyebab Kecanduan Penggunaan AI Assistant dan Dampaknya terhadap Produktivitas Mahasiswa"
+author:
+  - name: "Farchan G"
+    nim: "00993021"
+lecturer: "Lolak Jiakrlo, M.Kom."
+lecturer_label: "Dosen Pembimbing:"
+course: "Skripsi"
+institution: "Universitas Gunadarma"
+faculty: "Fakultas Ilmu Komputer dan Teknologi Informasi - Program Studi Sistem Informasi"
+year: "2026"
+date: "Oktober 2026"
+daftar_gambar: false
+daftar_tabel: false
+# abstract_id: |
+#   [PERLU DATA: abstrak setelah Bab 4-5 selesai]
+# keywords_id:
+#   - Kecanduan AI Assistant
+#   - Produktivitas Mahasiswa
+# abstract_en: |
+#   [PERLU DATA: abstract setelah Bab 4-5 selesai]
+# keywords_en:
+#   - AI Assistant Addiction
+#   - Student Productivity
+preset: "gunadarma-skripsi"
+...

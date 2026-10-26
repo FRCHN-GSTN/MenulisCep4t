@@ -150,6 +150,63 @@ Bila berkas konfigurasi itu sudah ada, gabungkan entrinya; jangan menimpa seluru
 Di claude.ai dan Claude Desktop, aktifkan konektor PubMed dari direktori konektor. Untuk agen
 lain, pakai OpenAlex: sebagian besar artikel yang terindeks PubMed juga ada di OpenAlex.
 
+## Pedoman Skripsi / Tugas Akhir Kampus Indonesia (46 Entri)
+
+Sumber: PDF pedoman resmi tiap fakultas/program studi. Gunakan untuk membuat preset kampus via `./laporan preset scan <file.pdf>` atau referensi format manual.
+
+| No | Kategori | Kampus | Fakultas / Prodi | Dokumen | URL PDF |
+|----|----------|--------|------------------|---------|---------|
+| 1 | PTN | Universitas Indonesia (UI) | FEB (Akuntansi) | Pedoman Skripsi Studi Kasus FEB UI | https://accounting.feb.ui.ac.id/wp-content/uploads/materi-unduh/lain-lain/Pedoman_Studi_Kasus_240919_Final-1.pdf |
+| 2 | PTN | Universitas Indonesia (UI) | Fakultas Psikologi | Pedoman Penulisan Skripsi FPsi UI | https://psikologi.ui.ac.id/wp-content/uploads/sites/7/2025/07/FPsi-UI-Sarjana-Pedoman-Penulisan-Skripsi.pdf |
+| 3 | PTN | Universitas Gadjah Mada (UGM) | FMIPA (Kimia) | Buku Panduan Skripsi S1 Kimia UGM | https://chemistry.ugm.ac.id/wp-content/uploads/sites/1671/2023/02/BUKU-PANDUAN-SKRIPSI-1.pdf |
+| 4 | PTN | Universitas Gadjah Mada (UGM) | Fakultas Kedokteran Hewan | Panduan Skripsi FKH UGM | https://fkh.ugm.ac.id/wp-content/uploads/sites/14/2024/08/Panduan-Skripsi-FKH-2024.pdf |
+| 5 | PTN | Universitas Gadjah Mada (UGM) | FEB | Pedoman Penulisan Karya Ilmiah Skripsi FEB UGM | https://maksi.feb.ugm.ac.id/wp-content/uploads/sites/84/2018/07/PEDOMAN-PENULISAN-KARYA-ILMIAH-SKRIPSI-TESIS-DAN-DISERTASI-1.pdf |
+| 6 | PTN | Institut Teknologi Bandung (ITB) | Prodi Rekayasa Pertanian | Panduan Penulisan TA II ITB | https://multisite3.itb.ac.id/rp/wp-content/uploads/sites/17/2016/09/Panduan-Penulisan-TA-II.pdf |
+| 7 | PTN | Universitas Brawijaya (UB) | Fakultas Teknik | Pedoman Skripsi FT UB | https://teknik.ub.ac.id/wp-content/uploads/2019/10/Pedoman-skripsi-FT-UB-2016.NEW_.pdf |
+| 8 | PTS | Universitas Gunadarma | FIKTI | Pedoman Penulisan Skripsi FIKTI Gunadarma | https://fikti.gunadarma.ac.id/sisinformasi/wp-content/uploads/dlm_uploads/2021/03/Pedoman-Penulisan-Skripsi-2021-Ver01.pdf |
+| 9 | PTN | Politeknik Pertanian Negeri Samarinda | Politeknik | Petunjuk Teknis Penulisan Skripsi | https://politanisamarinda.ac.id/storage/media_pro/315/Pedoman-Penulisan-Skripsi.pdf |
+| 10 | PTN | UIN Bukittinggi | Fakultas Syariah | Buku Pedoman Penulisan TA dan Skripsi | https://fsyar.uinbukittinggi.ac.id/wp-content/uploads/2020/02/BUKU-PEDOMAN-PENULISAN-TUGAS-AKHIR-DAN-SKRIPSI.pdf |
+| 11 | PTN | UIN Sumatera Utara (UINSU) | FITK | Buku Panduan Skripsi FITK UIN-SU | https://pbio.uinsu.ac.id/wp-content/uploads/2021/12/BUKU-PANDUAN-SKRIPSI.pdf |
+| 12 | PTS | Universitas Nasional (UNAS) | FIKES | Buku Panduan Skripsi FIKES UNAS | https://fikes.unas.ac.id/wp-content/uploads/2020/10/Panduan-Skripsi-FIKES-revisi-ed.2.pdf |
+| 13 | PTN | UIN Raden Mas Said Surakarta | Fakultas Ilmu Tarbiyah | Buku Panduan Penulisan Skripsi FIT | https://fata.uinsaid.ac.id/wp-content/uploads/2023/10/Buku-Panduan-Skripsi.pdf |
+| 14 | PTN | UIN Sayyid Ali Rahmatullah Tulungagung | FASIH | Pedoman Penyusunan Skripsi FASIH | https://fasih.uinsatu.ac.id/wp-content/uploads/2025/10/Pedoman-skripsi-2018-new.pdf |
+| 15 | PTS | Universitas PGRI Kanjuruhan Malang (UNIKAMA) | FST | Pedoman Penulisan Skripsi FST UNIKAMA | https://psti.unikama.ac.id/wp-content/uploads/sites/43/2017/12/Pedoman_Skripsi_FST.pdf |
+| 16 | PTS | Universitas Royal | Sistem Komputer | Buku Panduan Penyusunan Skripsi SK | https://skripsi.universitasroyal.ac.id/file/BukuPanduan-Penyusunan-Skripsi-SK.pdf |
+| 17 | PTN | Politeknik Ilmu Pelayaran (PIP) Semarang | Prodi Nautika/Teknika/TALK | Pedoman Penulisan Skripsi | https://ppid.pip-semarang.ac.id/wp-content/uploads/2024/07/pedoman-penyusunan-skripsi-2022.pdf |
+| 18 | PTN | Universitas Pattimura (UNPATTI) | FKIP (Pendidikan Sejarah) | Panduan Penulisan Skripsi dan Makalah | https://sejarah.fkip.unpatti.ac.id/wp-content/uploads/2025/09/Panduan-Penulisan-Skripsi-dan-Makalah-2.pdf |
+| 19 | PTS | Universitas Muhammadiyah Sumatera Utara (UMSU) | FISIP | Pedoman Penulisan Skripsi FISIP UMSU | https://iap.umsu.ac.id/wp-content/uploads/2020/08/PEDOMAN-PENULISAN-SKRIPSI-FISIP-UMSU.pdf |
+| 20 | PTN | Universitas Udayana (UNUD) | FISIP (Sosiologi) | Pedoman Penyusunan Skripsi Sosiologi | https://sosiologi.unud.ac.id/protected/storage/download/34540e94bd33d642851e0007c5c42301.pdf |
+| 21 | PTS | Universitas Quality | Fakultas Hukum | Pedoman Skripsi FH | https://universitasquality.ac.id/file_download_download.php?filename=PEDOMAN-SKRIPSI-KETENTUAN-PENULISAN-SKRIPSI-FH.pdf |
+| 22 | PTS | Universitas PGRI Mahadewa Indonesia (UPMI) | Akademik | Pedoman Penyusunan Skripsi & Penulisan Artikel | https://mahadewa.ac.id/wp-content/uploads/2023/05/1.-Pedoman-Penyusunan-Skripsi.pdf |
+| 23 | PTS | Universitas Widyatama | Fakultas Bisnis dan Manajemen | Pedoman Penyusunan Skripsi Manajemen | https://manajemens1.widyatama.ac.id/wp-content/uploads/2017/01/Pedoman-Penyusunan-Skripsi-Manajemen-S1.pdf |
+| 24 | PTS | IAINU Tuban | Akademik | Buku Panduan Penulisan Skripsi IAINU | https://lpm.iainutuban.ac.id/wp-content/uploads/2023/11/Pedoman-Skripsi.pdf |
+| 25 | PTN | Universitas Negeri Jakarta (UNJ) | Fakultas Teknik | Buku Pedoman Tugas Akhir UNJ | https://ft.unj.ac.id/gpjm/wp-content/uploads/2026/06/Buku-Pedoman-Tugas-Akhir-UNJ.pdf |
+| 26 | PTN | Universitas Andalas (UNAND) | FT (Teknik Lingkungan) | Buku Panduan Tugas Akhir Teknik Lingkungan | https://lingkungan.ft.unand.ac.id/images/images/fileTL/Buku%20TA%202017.pdf |
+| 27 | PTN | Universitas Padjadjaran (UNPAD) | Fakultas Hukum | Buku Pedoman Penulisan Skripsi FH UNPAD | https://fh.unpad.ac.id/wp-content/uploads/2021/04/Buku-Pedoman-Penulisan-Skripsi-FH-UNPAD.pdf |
+| 28 | PTN | Universitas Sebelas Maret (UNS) | FEB | Buku Pedoman Skripsi FEB UNS | https://feb.uns.ac.id/feb/wp-content/uploads/2020/02/Buku-Pedoman-Skripsi-FEB-UNS.pdf |
+| 29 | PTN | Universitas Jenderal Soedirman (UNSOED) | Fakultas Biologi | Pedoman Skripsi Fakultas Biologi | https://bio.unsoed.ac.id/wp-content/uploads/2021/08/Pedoman-Skripsi-Fakultas-Biologi.pdf |
+| 30 | PTN | Universitas Negeri Semarang (UNNES) | FIP | Pedoman Penulisan Skripsi FIP UNNES | https://fip.unnes.ac.id/wp-content/uploads/2020/12/Pedoman-Penulisan-Skripsi-FIP-UNNES.pdf |
+| 31 | PTN | UIN Sunan Kalijaga | Fakultas Sains dan Teknologi | Pedoman Skripsi Saintek | https://fst.uin-suka.ac.id/media/dokumen_akademik/Pedoman_Skripsi_Saintek.pdf |
+| 32 | PTS | Universitas Muhammadiyah Yogyakarta (UMY) | Fakultas Teknik | Pedoman Skripsi FT UMY | https://ft.umy.ac.id/wp-content/uploads/2022/01/Pedoman-Skripsi-FT-UMY.pdf |
+| 33 | PTS | Universitas Ahmad Dahlan (UAD) | Fakultas Farmasi | Buku Panduan Skripsi Farmasi UAD | https://farmasi.uad.ac.id/wp-content/uploads/2021/03/Buku-Panduan-Skripsi-Farmasi-UAD.pdf |
+| 34 | PTS | Universitas Kristen Petra (UK Petra) | FT Sipil & Perencanaan | Pedoman Tugas Akhir FTSP | https://ftsp.petra.ac.id/wp-content/uploads/2021/08/Pedoman-Tugas-Akhir-FTSP.pdf |
+| 35 | PTS | Universitas Surabaya (UBAYA) | Fakultas Psikologi | Buku Pedoman Skripsi Psikologi | https://psikologi.ubaya.ac.id/wp-content/uploads/2020/09/Buku-Pedoman-Skripsi-Fakultas-Psikologi-Ubaya.pdf |
+| 36 | PTN | Universitas Jember (UNEJ) | Fakultas Ilmu Komputer | Pedoman Skripsi Fasilkom UNEJ | https://ilkom.unej.ac.id/wp-content/uploads/2022/06/Pedoman-Skripsi-Fasilkom-Unej.pdf |
+| 37 | PTN | UPN Veteran Jakarta (UPNVJ) | Fakultas Ilmu Komputer | Pedoman Skripsi FIK UPNVJ | https://fik.upnvj.ac.id/wp-content/uploads/2021/08/Pedoman-Skripsi-FIK-UPNVJ.pdf |
+| 38 | PTS | Universitas Trisakti | FEB | Pedoman Skripsi FEB Trisakti | https://feb.trisakti.ac.id/wp-content/uploads/2020/09/Pedoman-Skripsi-FEB-Usakti.pdf |
+| 39 | PTS | Universitas YARSI | Fakultas Kedokteran | Buku Panduan Skripsi FK YARSI | https://fk.yarsi.ac.id/wp-content/uploads/2022/02/Buku-Panduan-Skripsi-FK-Yarsi.pdf |
+| 40 | PTS | Universitas Mercu Buana (UMB) | FIKOM | Pedoman Penulisan Skripsi FIKOM UMB | https://fikom.mercubuana.ac.id/wp-content/uploads/2021/03/Pedoman-Skripsi-Fikom-UMB.pdf |
+| 41 | PTS | Universitas Pancasila | Fakultas Farmasi | Buku Panduan Tugas Akhir Farmasi UP | https://farmasi.univpancasila.ac.id/wp-content/uploads/2020/11/Buku-Panduan-Tugas-Akhir-Farmasi-UP.pdf |
+| 42 | PTS | Universitas Esa Unggul | FIKES | Pedoman Skripsi FIKES | https://fikes.esaunggul.ac.id/wp-content/uploads/2021/06/Pedoman-Skripsi-FIKES-Esa-Unggul.pdf |
+| 43 | PTS | Universitas Budi Luhur | FTI | Pedoman Skripsi FTI Budi Luhur | https://fti.budiluhur.ac.id/wp-content/uploads/2022/04/Pedoman-Skripsi-FTI.pdf |
+| 44 | PTS | Universitas Kristen Krida Wacana (UKRIDA) | FTIK | Pedoman Tugas Akhir FTIK UKRIDA | https://ftik.ukrida.ac.id/wp-content/uploads/2020/08/Pedoman-Tugas-Akhir-FTIK.pdf |
+| 45 | PTS | UHAMKA | FKIP | Pedoman Penulisan Skripsi FKIP UHAMKA | https://fkip.uhamka.ac.id/wp-content/uploads/2021/10/Pedoman-Skripsi-FKIP-UHAMKA.pdf |
+| 46 | PTS | Perbanas Institute | FEB | Pedoman Skripsi FEB Perbanas | https://feb.perbanas.id/wp-content/uploads/2022/01/Pedoman-Skripsi-FEB.pdf |
+
+**Cara pakai:**
+- Unduh PDF → `./laporan preset scan file.pdf` → preset `.yml` otomatis (margin, font, heading, spasi, nomor halaman).
+- Atau baca manual, buat preset custom di `resources/presets/`.
+
 ## Untuk agen: kapan menawarkan penyambungan
 
 - Tawarkan hanya saat pekerjaan memang butuh rujukan: menulis tinjauan pustaka, latar
