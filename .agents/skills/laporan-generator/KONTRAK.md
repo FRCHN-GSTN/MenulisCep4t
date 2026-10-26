@@ -1,6 +1,6 @@
 # Kontrak tanggung jawab
 
-Kontrak ini mengikat agen yang memakai skill `naskah-id`. Isinya disarikan dari kebijakan
+Kontrak ini mengikat agen yang memakai skill `laporan-generator`. Isinya disarikan dari kebijakan
 COPE, Elsevier, IEEE, Springer Nature, Peraturan Rektor UI No. 16/2025, Panduan Penggunaan
 GenAI pada Pembelajaran di Perguruan Tinggi (Ditjen Diktiristek, 2024), dan panduan GenAI UGM
 (2025). Bagian ini sintesis, bukan kutipan. Daftar sumber ada di akhir berkas.

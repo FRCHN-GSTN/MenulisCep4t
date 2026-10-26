@@ -298,9 +298,12 @@ class TestFrontMatterOptIn(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             node_code = f"""
             const path = require('path');
-            const {{ initProject }} = require('{os.path.join(ROOT_DIR, "lib/init.js")}');
-            initProject({{ targetDir: '{tmpdir}/test_f', daftar_gambar: 'false', daftar_tabel: false, silent: true }});
-            initProject({{ targetDir: '{tmpdir}/test_t', daftar_gambar: 'true', daftar_tabel: true, silent: true }});
+            const libPath = '{os.path.join(ROOT_DIR, "lib/init.js").replace(chr(92), "/")}';
+            const {{ initProject }} = require(libPath);
+            const tmpF = '{tmpdir.replace(chr(92), "/")}/test_f';
+            const tmpT = '{tmpdir.replace(chr(92), "/")}/test_t';
+            initProject({{ targetDir: tmpF, daftar_gambar: 'false', daftar_tabel: false, silent: true }});
+            initProject({{ targetDir: tmpT, daftar_gambar: 'true', daftar_tabel: true, silent: true }});
             """
             proc = subprocess.run(["node", "-e", node_code], capture_output=True, text=True)
             self.assertEqual(proc.returncode, 0, f"Node initProject failed: {proc.stderr}")

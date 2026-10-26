@@ -1,6 +1,6 @@
 # Uji pada README repo ini
 
-README repo ini disunting dengan skill `naskah-id` sendiri, 22 Oktober 2026. Berkas ini mencatat
+README repo ini disunting dengan skill `laporan-generator` sendiri, 22 Oktober 2026. Berkas ini mencatat
 apa yang ditemukan, agar pembaca bisa menilai cara kerja skill pada teks yang ditulis agen AI.
 
 **Pekerjaan:** tulis ulang. Struktur bagian dipertahankan; kalimat, contoh, dan klaim boleh

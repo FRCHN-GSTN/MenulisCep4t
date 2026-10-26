@@ -24,7 +24,7 @@ from difflib import SequenceMatcher
 API = "https://api.openalex.org"
 CROSSREF = "https://api.crossref.org"
 KEY = os.environ.get("OPENALEX_API_KEY", "")
-UA = "naskah-id/1.0 (+https://github.com/nothinx/naskah-id)"
+UA = "laporan-generator/1.0 (+https://github.com/FRCHN-GSTN/MenulisCep4t)"
 FIELDS = "id,doi,title,publication_year,authorships,primary_location,cited_by_count,open_access,type,biblio,abstract_inverted_index"
 
 
