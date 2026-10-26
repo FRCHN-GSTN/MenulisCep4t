@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.jpg" alt="Laporan Generator" width="180"/>
+  <img src="Logo%20Menulis%20Cep4t.png" alt="Menulis Cep4t" width="180"/>
 </p>
 
 <h1 align="center">MenulisCep4t</h1>
