@@ -1,0 +1,26 @@
+# Preset: Universitas Gunadarma (Pedoman Penulisan Skripsi 2021)
+preset_id: "gunadarma-skripsi"
+name: "Universitas Gunadarma"
+description: "Format Skripsi Universitas Gunadarma (TNR 12, margin 4-3-4-3, spasi 1.5)."
+
+# Margin: Atas 4cm, Bawah 3cm, Kiri 4cm, Kanan 3cm
+margin_top: 4cm
+margin_bottom: 3cm
+margin_left: 4cm
+margin_right: 3cm
+
+# Tipografi (Pedoman: Times New Roman 12pt, spasi 1.5)
+font_family: "Times New Roman"
+font_size: 12pt
+line_spacing: 0.75em
+first_line_indent: 1.25cm
+
+# Penomoran Heading (Judul bab 14 tebal kapital di tengah; subbab 12 tebal)
+heading_chapter_prefix: "BAB "
+heading_chapter_num_format: "roman"
+heading_sub_dot: true
+heading_subsub_dot: true
+
+# Pengaturan Cover
+cover_show_lecturer: true
+cover_logo_width: 6cm

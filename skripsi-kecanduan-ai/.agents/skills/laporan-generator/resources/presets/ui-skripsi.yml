@@ -1,0 +1,26 @@
+# Preset: Universitas Indonesia (UI)
+preset_id: "ui-skripsi"
+name: "Universitas Indonesia (UI)"
+description: "Format Tugas Akhir & Skripsi sesuai Keputusan Rektor UI (Margin Kiri 4cm, Atas/Kanan/Bawah 3cm, TNR 12pt)."
+
+# Margin halaman (Standar Resmi Pedoman Teknis TA UI: Kiri 4cm, Atas 3cm, Bawah 3cm, Kanan 3cm)
+margin_top: 3cm
+margin_bottom: 3cm
+margin_left: 4cm
+margin_right: 3cm
+
+# Tipografi
+font_family: "Libertinus Serif"
+font_size: 12pt
+line_spacing: 0.75em
+first_line_indent: 1.25cm
+
+# Penomoran Heading
+heading_chapter_prefix: "BAB "
+heading_chapter_num_format: "roman"
+heading_sub_dot: true
+heading_subsub_dot: false
+
+# Pengaturan Cover
+cover_show_lecturer: true
+cover_logo_width: 4cm

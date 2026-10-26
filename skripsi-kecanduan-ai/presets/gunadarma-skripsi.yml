@@ -17,7 +17,7 @@ first_line_indent: 1.25cm
 
 # Penomoran Heading (Judul bab 14 tebal kapital di tengah; subbab 12 tebal)
 heading_chapter_prefix: "BAB "
-heading_chapter_num_format: "latin"
+heading_chapter_num_format: "roman"
 heading_sub_dot: true
 heading_subsub_dot: true
 

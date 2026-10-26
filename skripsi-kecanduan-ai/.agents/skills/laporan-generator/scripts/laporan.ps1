@@ -1,0 +1,628 @@
+﻿# ==============================================================================
+# Laporan Generator CLI Helper for Windows PowerShell (.\laporan.ps1)
+# ==============================================================================
+param (
+    [Parameter(Position=0)]
+    [string]$Command = "help",
+    [Parameter(Position=1)]
+    [string]$SubCommand = "",
+    [Parameter(Position=2)]
+    [string]$Arg1 = "",
+    [Parameter(Position=3)]
+    [string]$Arg2 = "",
+    [Parameter(ValueFromRemainingArguments=$true)]
+    [string[]]$RemainingArgs
+)
+
+$ErrorActionPreference = "Stop"
+$env:PYTHONUTF8 = "1"
+
+# Pastikan folder localBin ada di PATH sesi saat ini jika ada
+$localBin = Join-Path $env:LOCALAPPDATA "laporan-generator\bin"
+if ((Test-Path $localBin) -and ($env:Path -notlike "*$localBin*")) {
+    $env:Path = "$localBin;$env:Path"
+}
+
+function Get-PythonCommand {
+    foreach ($cmd in @("python", "python3")) {
+        $c = Get-Command $cmd -ErrorAction SilentlyContinue
+        if ($c) {
+            if ($c.Source -match "WindowsApps\\python") {
+                continue
+            }
+            return $c.Source
+        }
+    }
+    $fallback = Get-Command "python" -ErrorAction SilentlyContinue
+    if ($fallback) { return $fallback.Source }
+    return ""
+}
+
+function Show-Banner {
+    Write-Host "  ========================================================" -ForegroundColor Cyan
+    Write-Host "                 LAPORAN GENERATOR CLI v1.0.0             " -ForegroundColor Cyan
+    Write-Host "     Otomatisasi Dokumen Akademik (Typst + DOCX Engine)   " -ForegroundColor Cyan
+    Write-Host "  ========================================================" -ForegroundColor Cyan
+    Write-Host ""
+}
+
+function Show-Help {
+    Show-Banner
+    Write-Host "Penggunaan: .\laporan.ps1 <perintah>" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Perintah yang Tersedia:" -ForegroundColor White
+    Write-Host "  build        Kompilasi PDF dan DOCX sekaligus" -ForegroundColor Green
+    Write-Host "  pdf          Kompilasi dokumen PDF (via Typst)" -ForegroundColor Green
+    Write-Host "  docx         Kompilasi dokumen Microsoft Word (.docx)" -ForegroundColor Green
+    Write-Host "  init         Wizard interaktif untuk konfigurasi awal metadata" -ForegroundColor Green
+    Write-Host "  preset       Kelola preset format kampus (list/show/apply/validate/diff/scan)" -ForegroundColor Green
+    Write-Host "  stats        Analisis statistik kata, halaman, gambar, dan durasi baca" -ForegroundColor Green
+    Write-Host "  doctor       Audit kesehatan proyek (broken images, sitasi hilang, dll.)" -ForegroundColor Green
+    Write-Host "  bundle       Kemas seluruh laporan (PDF, DOCX, MD) menjadi arsip zip" -ForegroundColor Green
+    Write-Host "  setup        Pasang dependensi sistem otomatis Windows (Typst, Pandoc, Magick)" -ForegroundColor Green
+    Write-Host "  mcp          Jalankan Model Context Protocol (MCP) Server untuk AI Agent" -ForegroundColor Green
+    Write-Host "  sync-skills  Sinkronkan skill AI agent & MCP ke Antigravity, Claude, OpenCode" -ForegroundColor Green
+    Write-Host "  uninstall    Hapus integrasi skill dan perintah AI agent dari seluruh sistem" -ForegroundColor Green
+    Write-Host "  check        Audit dependensi sistem dan struktur proyek" -ForegroundColor Green
+    Write-Host "  test         Jalankan suite pengujian otomatis" -ForegroundColor Green
+    Write-Host "  view         Buka dokumen Laporan.pdf di PDF viewer" -ForegroundColor Green
+    Write-Host "  watch        Pantau perubahan berkas dan auto-rebuild" -ForegroundColor Green
+    Write-Host "  clean        Bersihkan berkas output dan direktori sementara" -ForegroundColor Green
+    Write-Host "  help         Tampilkan panduan bantuan ini" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Contoh:" -ForegroundColor Yellow
+    Write-Host "  .\laporan.ps1 build"
+    Write-Host "  .\laporan.ps1 stats"
+    Write-Host "  .\laporan.ps1 preset list"
+    Write-Host "  .\laporan.ps1 preset apply itb-ta"
+}
+
+function Cmd-Check {
+    Show-Banner
+    Write-Host "[1/2] Memeriksa Dependensi Sistem..." -ForegroundColor Blue
+
+    $pyPath = Get-PythonCommand
+    $pyFound = if ($pyPath) { Get-Command $pyPath -ErrorAction SilentlyContinue } else { $null }
+
+    $imFound = Get-Command "magick" -ErrorAction SilentlyContinue
+    if (-not $imFound -and -not ($env:OS -match "Windows")) {
+        $imFound = Get-Command "convert" -ErrorAction SilentlyContinue
+    }
+
+    $deps = @(
+        @{ Name="Pandoc"; Cmd="pandoc"; Found=(Get-Command "pandoc" -ErrorAction SilentlyContinue); Req=$true },
+        @{ Name="Typst"; Cmd="typst"; Found=(Get-Command "typst" -ErrorAction SilentlyContinue); Req=$true },
+        @{ Name="ImageMagick"; Cmd="magick/convert"; Found=$imFound; Req=$false },
+        @{ Name="Python 3"; Cmd="python/python3"; Found=$pyFound; Req=$true },
+        @{ Name="LibreOffice"; Cmd="soffice"; Found=(Get-Command "soffice" -ErrorAction SilentlyContinue); Req=$false }
+    )
+
+    $allOk = $true
+    foreach ($d in $deps) {
+        if ($d.Found) {
+            Write-Host "  [OK] $($d.Name) ($($d.Cmd)) terpasang: $($d.Found.Source)" -ForegroundColor Green
+        } else {
+            if ($d.Req) {
+                Write-Host "  [FAIL] $($d.Name) ($($d.Cmd)) TIDAK DITEMUKAN (Wajib)" -ForegroundColor Red
+                $allOk = $false
+            } else {
+                Write-Host "  [INFO] $($d.Name) ($($d.Cmd)) tidak ditemukan (Opsional)" -ForegroundColor Yellow
+            }
+        }
+    }
+
+    Write-Host ""
+    Write-Host "[2/2] Memeriksa Berkas Proyek..." -ForegroundColor Blue
+    $files = @("metadata.yml", "cover.md", "template.typ", "reference.docx", "references.bib", "docx.lua")
+    foreach ($f in $files) {
+        if (Test-Path $f) {
+            Write-Host "  [OK] Berkas $f ditemukan" -ForegroundColor Green
+        } else {
+            Write-Host "  [FAIL] Berkas $f tidak ditemukan" -ForegroundColor Red
+            $allOk = $false
+        }
+    }
+
+    $dirs = @("presets", "chapters")
+    foreach ($d in $dirs) {
+        if (Test-Path $d) {
+            Write-Host "  [OK] Direktori $d ditemukan" -ForegroundColor Green
+        } else {
+            Write-Host "  [FAIL] Direktori $d tidak ditemukan" -ForegroundColor Red
+            $allOk = $false
+        }
+    }
+
+    Write-Host ""
+    if ($allOk) {
+        Write-Host "Semua dependensi dan berkas proyek lengkap dan siap digunakan!" -ForegroundColor Green
+    } else {
+        Write-Host "Ada beberapa komponen yang kurang. Gunakan Docker jika ingin bebas instalasi lokal." -ForegroundColor Yellow
+    }
+}
+
+function Cmd-Build-PDF {
+    Show-Banner
+    Write-Host "Membangun Dokumen PDF (Typst Engine)..." -ForegroundColor Blue
+
+    $inputFiles = @("cover.md") + (Get-ChildItem -Path "chapters" -Filter "bab*.md" | Sort-Object Name | ForEach-Object { $_.FullName })
+    $presetOpt = ""
+    if (Test-Path "metadata.yml") {
+        $content = Get-Content "metadata.yml" -Raw
+        if ($content -match "(?:preset|margin_preset)\s*:\s*[`"']?([a-zA-Z0-9_-]+)[`"']?") {
+            $presetName = $matches[1]
+            if (Test-Path "presets\$presetName.yml") {
+                $presetOpt = "--metadata-file=presets\$presetName.yml"
+            }
+        }
+    }
+
+    $pandocArgs = @()
+    $pandocArgs += $inputFiles
+    $pandocArgs += "--template=template.typ"
+    if ($presetOpt) { $pandocArgs += $presetOpt }
+    $pandocArgs += "--metadata-file=metadata.yml"
+    $pandocArgs += "--citeproc"
+    $pandocArgs += "--bibliography=references.bib"
+    $pandocArgs += "--csl=apa.csl"
+    $pandocArgs += "--metadata=reference-section-title=DAFTAR PUSTAKA"
+    $pandocArgs += "--top-level-division=chapter"
+    $pandocArgs += "--pdf-engine=typst"
+    $pandocArgs += "--no-highlight"
+    $pandocArgs += @("-o", "Laporan.pdf")
+
+    & pandoc $pandocArgs
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host ""
+        Write-Host "=== PDF BERHASIL DIBUAT ===" -ForegroundColor Green
+        Write-Host "Lokasi: $(Get-Location)\Laporan.pdf" -ForegroundColor Cyan
+    } else {
+        Write-Host "[ERROR] Kompilasi PDF gagal." -ForegroundColor Red
+    }
+}
+
+function Cmd-Build-DOCX {
+    Show-Banner
+    Write-Host "Membangun Dokumen Microsoft Word (DOCX Multi-Pass)..." -ForegroundColor Blue
+
+    if (-not (Test-Path "chapters")) {
+        Write-Host "[ERROR] Direktori chapters/ tidak ditemukan." -ForegroundColor Red
+        return
+    }
+
+    $pyCmd = Get-PythonCommand
+    if (-not $pyCmd) {
+        Write-Host "[ERROR] Python 3 dibutuhkan untuk memproses DOCX." -ForegroundColor Red
+        return
+    }
+
+    $inputFiles = @("cover.md") + (Get-ChildItem -Path "chapters" -Filter "bab*.md" | Sort-Object Name | ForEach-Object { $_.FullName })
+    $presetOpt = ""
+    if (Test-Path "metadata.yml") {
+        $content = Get-Content "metadata.yml" -Raw
+        if ($content -match "(?:preset|margin_preset)\s*:\s*[`"']?([a-zA-Z0-9_-]+)[`"']?") {
+            $presetName = $matches[1]
+            if (Test-Path "presets\$presetName.yml") {
+                $presetOpt = "--metadata-file=presets\$presetName.yml"
+            }
+        }
+    }
+
+    $tmpDocx = [System.IO.Path]::GetTempFileName() + ".docx"
+    $sectDocx = [System.IO.Path]::GetTempFileName() + ".docx"
+
+    try {
+        $pandocArgs = @()
+        $pandocArgs += $inputFiles
+        if ($presetOpt) { $pandocArgs += $presetOpt }
+        $pandocArgs += "--metadata-file=metadata.yml"
+        $pandocArgs += "--citeproc"
+        $pandocArgs += "--bibliography=references.bib"
+        $pandocArgs += "--csl=apa.csl"
+        $pandocArgs += "--metadata=reference-section-title=DAFTAR PUSTAKA"
+        $pandocArgs += "--top-level-division=chapter"
+        $pandocArgs += "--reference-doc=reference.docx"
+        $pandocArgs += "--lua-filter=docx.lua"
+        $pandocArgs += @("-o", $tmpDocx)
+
+        & pandoc $pandocArgs
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "[ERROR] Kompilasi Pandoc ke DOCX gagal." -ForegroundColor Red
+            return
+        }
+
+        & $pyCmd scripts/finalize-docx.py $tmpDocx $sectDocx
+        & $pyCmd scripts/docx-pagenum.py $sectDocx Laporan.docx
+
+        if (Test-Path "Laporan.docx") {
+            Write-Host ""
+            Write-Host "=== DOCX BERHASIL DIBUAT ===" -ForegroundColor Green
+            Write-Host "Lokasi: $(Get-Location)\Laporan.docx" -ForegroundColor Cyan
+        }
+    } finally {
+        Remove-Item -Force -ErrorAction SilentlyContinue $tmpDocx, $sectDocx
+    }
+}
+
+function Cmd-Build {
+    Show-Banner
+    Write-Host "[1/2] Membangun Dokumen PDF (Typst Engine)..." -ForegroundColor Blue
+    Cmd-Build-PDF
+    Write-Host ""
+    Write-Host "[2/2] Membangun Dokumen Microsoft Word (DOCX Multi-Pass)..." -ForegroundColor Blue
+    Cmd-Build-DOCX
+    Write-Host ""
+    Write-Host "Dokumen PDF dan DOCX berhasil diproses!" -ForegroundColor Green
+}
+
+function Escape-Yaml {
+    param ([string]$Val)
+    if (-not $Val) { return "" }
+    $Val = $Val -replace "\\", "\\\\"
+    $Val = $Val -replace '"', '\"'
+    $Val = $Val -replace "`r", ""
+    $Val = $Val -replace "`n", " "
+    return $Val
+}
+
+function Cmd-Init {
+    Show-Banner
+    Write-Host "Wizard Konfigurasi Laporan Akademik (Windows PowerShell)" -ForegroundColor Cyan
+    Write-Host "Isi data di bawah ini (tekan Enter untuk memakai nilai default):"
+    Write-Host ""
+
+    $in_title = Read-Host "Judul Laporan [LAPORAN PROYEK AKADEMIK]"
+    if (-not $in_title) { $in_title = "LAPORAN PROYEK AKADEMIK" }
+
+    $in_subtitle = Read-Host "Subjudul [DOKUMENTASI DAN ANALISIS IMPLEMENTASI]"
+    if (-not $in_subtitle) { $in_subtitle = "DOKUMENTASI DAN ANALISIS IMPLEMENTASI" }
+
+    $in_course = Read-Host "Mata Kuliah [Proyek Perangkat Lunak]"
+    if (-not $in_course) { $in_course = "Proyek Perangkat Lunak" }
+
+    $in_lecturer = Read-Host "Dosen Pengampu [Dr. Nama Dosen, M.Kom.]"
+    if (-not $in_lecturer) { $in_lecturer = "Dr. Nama Dosen, M.Kom." }
+
+    $in_author = Read-Host "Nama Penulis 1 [Nama Mahasiswa]"
+    if (-not $in_author) { $in_author = "Nama Mahasiswa" }
+
+    $in_nim = Read-Host "NIM Penulis 1 [12345678]"
+    if (-not $in_nim) { $in_nim = "12345678" }
+
+    $in_institution = Read-Host "Institusi/Universitas [UNIVERSITAS TEKNOLOGI]"
+    if (-not $in_institution) { $in_institution = "UNIVERSITAS TEKNOLOGI" }
+
+    $in_faculty = Read-Host "Fakultas [FAKULTAS ILMU KOMPUTER]"
+    if (-not $in_faculty) { $in_faculty = "FAKULTAS ILMU KOMPUTER" }
+
+    $in_year = Read-Host "Tahun Akademik [2026/2027]"
+    if (-not $in_year) { $in_year = "2026/2027" }
+
+    Write-Host ""
+    Write-Host "Pilihan Preset Format Kampus:" -ForegroundColor Blue
+    Write-Host "  standard / skripsi-4433 / ui-skripsi / itb-ta / ugm-skripsi / its-skripsi / unpad-skripsi"
+    $in_preset = Read-Host "Preset Format [standard]"
+    if (-not $in_preset) { $in_preset = "standard" }
+
+    $curDate = (Get-Date -Format "MMMM yyyy")
+
+    $escTitle = Escape-Yaml $in_title
+    $escSubtitle = Escape-Yaml $in_subtitle
+    $escCourse = Escape-Yaml $in_course
+    $escLecturer = Escape-Yaml $in_lecturer
+    $escAuthor = Escape-Yaml $in_author
+    $escNim = Escape-Yaml $in_nim
+    $escInstitution = Escape-Yaml $in_institution
+    $escFaculty = Escape-Yaml $in_faculty
+    $escYear = Escape-Yaml $in_year
+    $escPreset = Escape-Yaml $in_preset
+
+    $yamlContent = @"
+title: "$escTitle"
+subtitle: "$escSubtitle"
+course: "$escCourse"
+lecturer: "$escLecturer"
+author:
+  - name: "$escAuthor"
+    nim: "$escNim"
+institution: "$escInstitution"
+faculty: "$escFaculty"
+year: "$escYear"
+date: "$curDate"
+preset: "$escPreset"
+"@
+
+    Set-Content -Path "metadata.yml" -Value $yamlContent
+    Write-Host ""
+    Write-Host "metadata.yml berhasil diperbarui!" -ForegroundColor Green
+    Write-Host "Jalankan '.\laporan.ps1 build' untuk mulai menghasilkan laporan." -ForegroundColor Cyan
+}
+
+function Cmd-Test {
+    Show-Banner
+    Write-Host "Menjalankan Test Suite..." -ForegroundColor Blue
+    $gitBash = "C:\Program Files\Git\bin\bash.exe"
+    $bashCmd = if (Test-Path $gitBash) { $gitBash } elseif ((Get-Command "bash" -ErrorAction SilentlyContinue) -and (Get-Command "bash").Source -notmatch "system32\\bash\.exe") { "bash" } else { "" }
+    if ($bashCmd -and (Test-Path "test.sh")) {
+        & $bashCmd test.sh
+    } else {
+        $pyCmd = Get-PythonCommand
+        if ($pyCmd) {
+            Write-Host "Menjalankan validasi skema preset..." -ForegroundColor Blue
+            if (Test-Path "scripts/validate-preset.py") {
+                & $pyCmd scripts/validate-preset.py --all
+            }
+            if (Test-Path "scripts/test_scripts.py") {
+                Write-Host ""
+                Write-Host "Menjalankan unit test skrip Python..." -ForegroundColor Blue
+                & $pyCmd scripts/test_scripts.py
+            }
+        } else {
+            Write-Host "Test suite membutuhkan bash atau python3." -ForegroundColor Yellow
+        }
+    }
+}
+
+function Cmd-Preset {
+    param ($Sub, $P1, $P2)
+    $pyCmd = Get-PythonCommand
+
+    switch ($Sub) {
+        "list" {
+            Show-Banner
+            Write-Host "Daftar Preset Format Kampus Tersedia:" -ForegroundColor Blue
+            Write-Host ""
+            Get-ChildItem -Path "presets" -Filter "*.yml" | ForEach-Object {
+                $presetId = $_.BaseName
+                $name = (Select-String -Path $_.FullName -Pattern "^\s*name:\s*`"?(.*?)`"?\s*$" | Select-Object -First 1).Matches.Groups[1].Value
+                $desc = (Select-String -Path $_.FullName -Pattern "^\s*description:\s*`"?(.*?)`"?\s*$" | Select-Object -First 1).Matches.Groups[1].Value
+                Write-Host "  * $presetId - $name" -ForegroundColor Green
+                if ($desc) { Write-Host "    $desc" -ForegroundColor Gray }
+                Write-Host ""
+            }
+        }
+        "show" {
+            if (-not $P1) { Write-Host "Error: Sebutkan ID preset. Contoh: .\laporan.ps1 preset show itb-ta" -ForegroundColor Red; return }
+            $file = "presets\$P1.yml"
+            if (Test-Path $file) {
+                Show-Banner
+                Write-Host "Konfigurasi Preset: $P1" -ForegroundColor Cyan
+                Write-Host "--------------------------------------------------------"
+                Get-Content $file
+                Write-Host "--------------------------------------------------------"
+            } else {
+                Write-Host "Preset '$P1' tidak ditemukan." -ForegroundColor Red
+            }
+        }
+        "apply" {
+            if (-not $P1) { Write-Host "Error: Sebutkan ID preset. Contoh: .\laporan.ps1 preset apply itb-ta" -ForegroundColor Red; return }
+            $file = "presets\$P1.yml"
+            if (-not (Test-Path $file)) { Write-Host "Preset '$P1' tidak ditemukan." -ForegroundColor Red; return }
+            if (-not (Test-Path "metadata.yml")) { Write-Host "metadata.yml tidak ditemukan." -ForegroundColor Red; return }
+
+            $content = Get-Content "metadata.yml" -Raw
+            if ($content -match "preset\s*:") {
+                $content = $content -replace "preset\s*:.*", "preset: `"$P1`""
+            } else {
+                $content += "`npreset: `"$P1`""
+            }
+            Set-Content -Path "metadata.yml" -Value $content -NoNewline
+            Write-Host "[OK] Preset '$P1' berhasil diterapkan ke metadata.yml!" -ForegroundColor Green
+        }
+        "validate" {
+            if (-not $pyCmd) { Write-Host "Error: Python 3 tidak ditemukan." -ForegroundColor Red; return }
+            if ($P1) {
+                $tgt = $P1
+                if (Test-Path "presets\$tgt.yml") { $tgt = "presets\$tgt.yml" }
+                & $pyCmd scripts/validate-preset.py $tgt
+            } else {
+                & $pyCmd scripts/validate-preset.py --all
+            }
+        }
+        "diff" {
+            if (-not $P1) { Write-Host "Error: Sebutkan setidaknya 1 preset untuk dibandingkan." -ForegroundColor Red; return }
+            $f1 = "presets\$P1.yml"
+            if (-not (Test-Path $f1)) { Write-Host "Preset '$P1' tidak ditemukan." -ForegroundColor Red; return }
+            if ($P2) {
+                $f2 = "presets\$P2.yml"
+                if (-not (Test-Path $f2)) { Write-Host "Preset '$P2' tidak ditemukan." -ForegroundColor Red; return }
+                Compare-Object (Get-Content $f1) (Get-Content $f2)
+            } else {
+                $curr = "standard"
+                if (Test-Path "metadata.yml") {
+                    $content = Get-Content "metadata.yml" -Raw
+                    if ($content -match "(?:preset|margin_preset)\s*:\s*[`"']?([a-zA-Z0-9_-]+)[`"']?") {
+                        $curr = $matches[1]
+                    }
+                }
+                $f2 = "presets\$curr.yml"
+                Compare-Object (Get-Content $f2) (Get-Content $f1)
+            }
+        }
+        "scan" {
+            if (-not $pyCmd) { Write-Host "Error: Python 3 tidak ditemukan." -ForegroundColor Red; return }
+            if (-not $P1) { Write-Host "Error: Masukkan path file PDF pedoman kampus." -ForegroundColor Red; return }
+            & $pyCmd scripts/scan-preset.py $P1 $P2
+        }
+        default {
+            Write-Host "Gunakan: .\laporan.ps1 preset [list | show <id> | apply <id> | validate | diff <id> | scan <file>]" -ForegroundColor Yellow
+        }
+    }
+}
+
+function Cmd-Clean {
+    Remove-Item -Force -ErrorAction SilentlyContinue Laporan.pdf, Laporan.docx, Laporan.html
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue tmp, dist
+    Write-Host "[OK] Berkas output berhasil dibersihkan." -ForegroundColor Green
+}
+
+function Cmd-Stats {
+    param([string[]]$ArgsList)
+    $pyCmd = Get-PythonCommand
+    if ($pyCmd) {
+        & $pyCmd scripts/report-stats.py @ArgsList
+    } else {
+        Write-Host "Error: Python 3 tidak ditemukan." -ForegroundColor Red
+    }
+}
+
+function Cmd-Doctor {
+    param([string[]]$ArgsList)
+    $pyCmd = Get-PythonCommand
+    if ($pyCmd) {
+        & $pyCmd scripts/report-doctor.py @ArgsList
+    } else {
+        Write-Host "Error: Python 3 tidak ditemukan." -ForegroundColor Red
+    }
+}
+
+function Cmd-Bundle {
+    param([string[]]$ArgsList)
+    $pyCmd = Get-PythonCommand
+    if ($pyCmd) {
+        & $pyCmd scripts/bundle.py @ArgsList
+    } else {
+        Write-Host "Error: Python 3 tidak ditemukan." -ForegroundColor Red
+    }
+}
+
+function Cmd-View {
+    if (Test-Path "Laporan.pdf") {
+        Start-Process "Laporan.pdf"
+    } else {
+        Write-Host "Laporan.pdf belum dibuat. Jalankan '.\laporan.ps1 build' terlebih dahulu." -ForegroundColor Red
+    }
+}
+
+function Cmd-Watch {
+    Show-Banner
+    Write-Host "Memantau perubahan berkas dan auto-rebuild... (Tekan Ctrl+C untuk berhenti)" -ForegroundColor Cyan
+    $scriptPath = $MyInvocation.MyCommand.Definition
+    if (-not $scriptPath) { $scriptPath = $PSCommandPath }
+    if (-not $scriptPath) { $scriptPath = ".\laporan.ps1" }
+
+    $watcher = New-Object System.IO.FileSystemWatcher
+    $watcher.Path = (Get-Location).Path
+    $watcher.IncludeSubdirectories = $true
+    $watcher.EnableRaisingEvents = $true
+    $watcher.Filter = "*.*"
+
+    $action = {
+        $path = $Event.SourceEventArgs.FullPath
+        if ($path -notmatch '(\.pdf|\.docx|tmp|dist|\.git)' -and ($path -match '(\.md|\.typ|\.yml|\.bib)')) {
+            Write-Host "[Perubahan Terdeteksi] $path -> Membangun ulang..." -ForegroundColor Yellow
+            if (Get-Command Cmd-Build -ErrorAction SilentlyContinue) {
+                Cmd-Build
+            } elseif ($using:scriptPath -and (Test-Path $using:scriptPath)) {
+                & powershell -ExecutionPolicy Bypass -File $using:scriptPath build
+            } else {
+                powershell -ExecutionPolicy Bypass -File ".\laporan.ps1" build
+            }
+        }
+    }
+
+    Register-ObjectEvent $watcher "Changed" -Action $action | Out-Null
+    Register-ObjectEvent $watcher "Created" -Action $action | Out-Null
+
+    try {
+        while ($true) { Start-Sleep -Seconds 1 }
+    } finally {
+        Get-EventSubscriber | Unregister-Event
+        $watcher.Dispose()
+    }
+}
+
+$extraArgs = @()
+if ($SubCommand) { $extraArgs += $SubCommand }
+if ($Arg1) { $extraArgs += $Arg1 }
+if ($Arg2) { $extraArgs += $Arg2 }
+if ($RemainingArgs) { $extraArgs += $RemainingArgs }
+
+switch ($Command.ToLower()) {
+    "build"  { Cmd-Build }
+    "pdf"    { Cmd-Build-PDF }
+    "docx"   { Cmd-Build-DOCX }
+    "init"   { Cmd-Init }
+    "stats"  { Cmd-Stats $extraArgs }
+    "doctor" { Cmd-Doctor $extraArgs }
+    "bundle" { Cmd-Bundle $extraArgs }
+    "setup"  { & powershell -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "scripts\setup-deps.ps1") }
+    "mcp"    {
+        if (Get-Command "node" -ErrorAction SilentlyContinue) {
+            $mcpPath = Join-Path $PSScriptRoot "bin\mcp-server.js"
+            if (Test-Path $mcpPath) {
+                node $mcpPath @extraArgs
+            } elseif (Get-Command "npx" -ErrorAction SilentlyContinue) {
+                npx -y laporan-generator mcp @extraArgs
+            } else {
+                Write-Host "bin\mcp-server.js tidak ditemukan dan npx tidak tersedia." -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Node.js diperlukan untuk menjalankan MCP Server." -ForegroundColor Yellow
+        }
+    }
+    "sync-skills" { 
+        if (Get-Command "node" -ErrorAction SilentlyContinue) {
+            $genPath = Join-Path $PSScriptRoot "bin\laporan-generator.js"
+            if (Test-Path $genPath) {
+                node $genPath sync-hosts @extraArgs
+            } elseif (Get-Command "npx" -ErrorAction SilentlyContinue) {
+                npx -y laporan-generator sync-hosts @extraArgs
+            } else {
+                Write-Host "bin\laporan-generator.js tidak ditemukan dan npx tidak tersedia." -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Node.js diperlukan untuk sinkronisasi multi-host AI agent." -ForegroundColor Yellow
+        }
+    }
+    "sync-hosts"  {
+        if (Get-Command "node" -ErrorAction SilentlyContinue) {
+            $genPath = Join-Path $PSScriptRoot "bin\laporan-generator.js"
+            if (Test-Path $genPath) {
+                node $genPath sync-hosts @extraArgs
+            } elseif (Get-Command "npx" -ErrorAction SilentlyContinue) {
+                npx -y laporan-generator sync-hosts @extraArgs
+            } else {
+                Write-Host "bin\laporan-generator.js tidak ditemukan dan npx tidak tersedia." -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Node.js diperlukan untuk sinkronisasi multi-host AI agent." -ForegroundColor Yellow
+        }
+    }
+    "uninstall"   {
+        if (Get-Command "node" -ErrorAction SilentlyContinue) {
+            $genPath = Join-Path $PSScriptRoot "bin\laporan-generator.js"
+            if (Test-Path $genPath) {
+                node $genPath uninstall @extraArgs
+            } elseif (Get-Command "npx" -ErrorAction SilentlyContinue) {
+                npx -y laporan-generator uninstall @extraArgs
+            } else {
+                Write-Host "bin\laporan-generator.js tidak ditemukan dan npx tidak tersedia." -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Node.js diperlukan untuk membersihkan integrasi AI agent." -ForegroundColor Yellow
+        }
+    }
+    "clean-skills" {
+        if (Get-Command "node" -ErrorAction SilentlyContinue) {
+            $genPath = Join-Path $PSScriptRoot "bin\laporan-generator.js"
+            if (Test-Path $genPath) {
+                node $genPath uninstall @extraArgs
+            } elseif (Get-Command "npx" -ErrorAction SilentlyContinue) {
+                npx -y laporan-generator uninstall @extraArgs
+            } else {
+                Write-Host "bin\laporan-generator.js tidak ditemukan dan npx tidak tersedia." -ForegroundColor Red
+            }
+        } else {
+            Write-Host "Node.js diperlukan untuk membersihkan integrasi AI agent." -ForegroundColor Yellow
+        }
+    }
+    "check"       { Cmd-Check }
+    "clean"  { Cmd-Clean }
+    "view"   { Cmd-View }
+    "watch"  { Cmd-Watch }
+    "test"   { Cmd-Test }
+    "preset" { Cmd-Preset $SubCommand $Arg1 $Arg2 }
+    "help"   { Show-Help }
+    default  { Show-Help }
+}

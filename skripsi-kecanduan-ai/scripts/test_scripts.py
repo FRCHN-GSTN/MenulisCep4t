@@ -296,11 +296,13 @@ class TestFrontMatterOptIn(unittest.TestCase):
             self.skipTest("Node.js runtime not found in PATH")
 
         with tempfile.TemporaryDirectory() as tmpdir:
+            lib_path = os.path.join(ROOT_DIR, "lib/init.js").replace("\\", "/")
+            tmpdir_js = tmpdir.replace("\\", "/")
             node_code = f"""
             const path = require('path');
-            const {{ initProject }} = require('{os.path.join(ROOT_DIR, "lib/init.js")}');
-            initProject({{ targetDir: '{tmpdir}/test_f', daftar_gambar: 'false', daftar_tabel: false, silent: true }});
-            initProject({{ targetDir: '{tmpdir}/test_t', daftar_gambar: 'true', daftar_tabel: true, silent: true }});
+            const {{ initProject }} = require('{lib_path}');
+            initProject({{ targetDir: '{tmpdir_js}/test_f', daftar_gambar: 'false', daftar_tabel: false, silent: true }});
+            initProject({{ targetDir: '{tmpdir_js}/test_t', daftar_gambar: 'true', daftar_tabel: true, silent: true }});
             """
             proc = subprocess.run(["node", "-e", node_code], capture_output=True, text=True)
             self.assertEqual(proc.returncode, 0, f"Node initProject failed: {proc.stderr}")

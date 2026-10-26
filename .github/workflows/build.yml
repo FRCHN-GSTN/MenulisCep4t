@@ -1,0 +1,41 @@
+name: Build Laporan PDF
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick xz-utils unzip python3 poppler-utils lua5.4 nodejs
+          wget -q "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb" -O /tmp/pandoc.deb
+          sudo dpkg -i /tmp/pandoc.deb
+          wget -q "https://github.com/typst/typst/releases/download/v0.15.1/typst-x86_64-unknown-linux-musl.tar.xz" -O /tmp/typst.tar.xz
+          tar -xJf /tmp/typst.tar.xz -C /tmp
+          sudo mv /tmp/typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          rm -rf /tmp/pandoc.deb /tmp/typst.tar.xz /tmp/typst-x86_64-unknown-linux-musl
+
+      - name: Run Test Suite
+        run: ./test.sh
+
+      - name: Build PDF and DOCX
+        run: |
+          ./build.sh
+          make docx
+
+      - name: Upload PDF and DOCX artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Laporan
+          path: |
+            Laporan.pdf
+            Laporan.docx
